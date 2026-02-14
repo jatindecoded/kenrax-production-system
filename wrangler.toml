@@ -1,0 +1,45 @@
+name = "production-tracking"
+main = ".open-next/worker.js"
+compatibility_date = "2025-12-01"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+
+[assets]
+binding = "ASSETS"
+directory = ".open-next/assets"
+
+[images]
+binding = "IMAGES"
+
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "production-tracking"
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "production-system-test"
+database_id = "604b4c37-991e-4b09-a4a7-f45b19408efe"
+migrations_dir = "./drizzle/migrations"
+remote = true
+
+[env.development]
+vars = { ENVIRONMENT = "development" }
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "production-system-test"
+database_id = "604b4c37-991e-4b09-a4a7-f45b19408efe"
+migrations_dir = "./drizzle/migrations"
+remote = true
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "production-system-test"
+database_id = "604b4c37-991e-4b09-a4a7-f45b19408efe"
+migrations_dir = "./drizzle/migrations"
+remote = true

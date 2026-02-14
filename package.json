@@ -5,19 +5,30 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "build:cf": "next build && npx opennextjs-cloudflare build",
+    "deploy": "npm run build:cf && npx opennextjs-cloudflare deploy",
+    "preview:dev": "wrangler dev --local --env development",
+    "preview:prod": "wrangler deploy --dry-run --env production",
+    "upload": "npx opennextjs-cloudflare deploy",
     "lint": "eslint"
   },
   "dependencies": {
+    "@cloudflare/workers-types": "^4.20251224.0",
+    "@opennextjs/cloudflare": "^1.16.5",
+    "drizzle-orm": "^0.45.1",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "tabler-icons-react": "^1.56.0",
+    "wrangler": "^4.65.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "drizzle-kit": "^0.31.8",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
