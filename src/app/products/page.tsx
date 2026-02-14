@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { Product } from '@/lib/db';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchProducts();
@@ -31,6 +31,25 @@ export default function ProductsPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const filteredProducts = products.filter((product) => {
+    if (!searchTerm) return true;
+
+    const normalizedSearch = searchTerm.replace(/\s/g, '').toLowerCase();
+    return (
+      product.part_number.replace(/\s/g, '').toLowerCase().includes(normalizedSearch) ||
+      product.product_type.replace(/\s/g, '').toLowerCase().includes(normalizedSearch) ||
+      (product.description && product.description.replace(/\s/g, '').toLowerCase().includes(normalizedSearch))
+    );
+  });
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
   };
 
   const formatDate = (date: string | Date) => {
@@ -66,6 +85,26 @@ export default function ProductsPage() {
           </div>
         )}
 
+        {/* Search */}
+        <form onSubmit={handleSearchSubmit} className="mb-6 flex flex-wrap gap-2">
+          <input
+            type="text"
+            placeholder="Search part number, type, or description..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="w-full md:flex-1 px-3 py-2 border border-slate-300 rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+            autoComplete="off"
+          />
+          <div className="flex w-full md:w-auto gap-2">
+            <button
+              type="submit"
+              className="flex-1 md:flex-none px-4 py-2 bg-black text-white font-semibold rounded hover:bg-slate-900 transition-colors text-sm tracking-wide uppercase"
+            >
+              Search
+            </button>
+          </div>
+        </form>
+
         {/* Loading */}
         {loading && (
           <div className="text-center py-12">
@@ -75,9 +114,11 @@ export default function ProductsPage() {
         )}
 
         {/* Empty */}
-        {!loading && products.length === 0 && (
+        {!loading && filteredProducts.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-sm text-slate-600 mb-4">No products yet.</p>
+            <p className="text-sm text-slate-600 mb-4">
+              {searchTerm ? 'No products found.' : 'No products yet.'}
+            </p>
             <a href="/products/add" className="inline-block px-4 py-2 bg-black text-white font-semibold rounded hover:bg-slate-900 transition-colors text-sm tracking-wide uppercase">
               Add Product
             </a>
@@ -85,7 +126,7 @@ export default function ProductsPage() {
         )}
 
         {/* Table - Desktop Only */}
-        {!loading && products.length > 0 && (
+        {!loading && filteredProducts.length > 0 && (
           <div className="hidden md:block overflow-x-auto border border-slate-200 rounded">
             <table className="w-full text-sm">
               <thead className="bg-slate-50 border-b border-slate-200">
@@ -97,8 +138,8 @@ export default function ProductsPage() {
                 </tr>
               </thead>
               <tbody>
-                {products.map((product, idx) => (
-                  <tr key={product.id} className={idx !== products.length - 1 ? 'border-b border-slate-100' : ''}>
+                {filteredProducts.map((product, idx) => (
+                  <tr key={product.id} className={idx !== filteredProducts.length - 1 ? 'border-b border-slate-100' : ''}>
                     <td className="px-4 py-3 font-medium text-black">{product.part_number}</td>
                     <td className="px-4 py-3 text-black text-xs font-medium">{product.product_type}</td>
                     <td className="px-4 py-3 text-slate-600 text-xs">{product.description || '-'}</td>
@@ -111,9 +152,9 @@ export default function ProductsPage() {
         )}
 
         {/* Cards - Mobile Only */}
-        {!loading && products.length > 0 && (
+        {!loading && filteredProducts.length > 0 && (
           <div className="md:hidden space-y-3">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <div key={product.id} className="border border-slate-200 rounded p-3 bg-white">
                 <div className="flex justify-between items-start mb-2">
                   <div className="font-mono font-bold text-black text-sm">{product.part_number}</div>

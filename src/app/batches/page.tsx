@@ -166,7 +166,7 @@ function BatchesPageContent() {
   };
 
   return (
-    <div className="bg-white" style={{ fontFamily: 'var(--font-geist-sans)' }}>
+    <div className="bg-white overflow-x-hidden" style={{ fontFamily: 'var(--font-geist-sans)' }}>
       {/* Header */}
       <div className="border-b border-black">
         <div className="max-w-4xl mx-auto px-4 md:px-6 py-6">
@@ -190,28 +190,30 @@ function BatchesPageContent() {
         )}
 
         {/* Search */}
-        <form onSubmit={handleSearchSubmit} className="mb-6 flex gap-2">
+        <form onSubmit={handleSearchSubmit} className="mb-6 flex flex-wrap gap-2">
           <input
             type="text"
             placeholder="Search batch code or part number..."
             value={searchTerm}
             onChange={handleSearch}
-            className="flex-1 px-3 py-2 border border-slate-300 rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+            className="w-full md:flex-1 px-3 py-2 border border-slate-300 rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
             autoComplete="off"
           />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-black text-white font-semibold rounded hover:bg-slate-900 transition-colors text-sm tracking-wide uppercase"
-          >
-            Search
-          </button>
-          <button
-            type="button"
-            onClick={handleExport}
-            className="px-4 py-2 bg-slate-700 text-white font-semibold rounded hover:bg-slate-800 transition-colors text-sm tracking-wide uppercase"
-          >
-            Export
-          </button>
+          <div className="flex w-full md:w-auto gap-2">
+            <button
+              type="submit"
+              className="flex-1 md:flex-none px-4 py-2 bg-black text-white font-semibold rounded hover:bg-slate-900 transition-colors text-sm tracking-wide uppercase"
+            >
+              Search
+            </button>
+            <button
+              type="button"
+              onClick={handleExport}
+              className="flex-1 md:flex-none px-4 py-2 border border-slate-700 text-slate-700 font-semibold rounded hover:bg-slate-100 transition-colors text-sm tracking-wide uppercase"
+            >
+              Export
+            </button>
+          </div>
         </form>
 
         {/* Loading */}
@@ -272,12 +274,23 @@ function BatchesPageContent() {
             {filteredBatches.map((batch) => (
               <div key={batch.id} className="border border-slate-200 rounded p-4 bg-white">
                 <div className="mb-3 pb-2 border-b border-slate-200">
-                  <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Batch Code</div>
-                  <div className="font-mono font-bold text-black text-lg">{highlightMatch(batch.batch_code, searchTerm)}</div>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide">Part Number</div>
+                    <div className="text-xs text-slate-500">
+                      {formatDate(batch.created_at)}
+                    </div>
+                  </div>
+                  <div className="font-bold text-black text-lg">{highlightMatch(batch.part_number, searchTerm)}</div>
                 </div>
                 <div className="mb-3 pb-2 border-b border-slate-200">
-                  <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Part Number</div>
-                  <div className="font-bold text-black text-lg">{highlightMatch(batch.part_number, searchTerm)}</div>
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide">Batch Code</div>
+                    <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide">Qty</div>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="font-mono font-bold text-black text-lg">{highlightMatch(batch.batch_code, searchTerm)}</div>
+                    <div className="font-mono font-bold text-black text-lg">{batch.quantity}</div>
+                  </div>
                 </div>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
@@ -300,10 +313,7 @@ function BatchesPageContent() {
                       <span className="font-medium text-black">{batch.production_line}</span>
                     </div>
                   )}
-                  <div className="flex justify-between pt-1 border-t border-slate-100">
-                    <span className="text-slate-600">Date:</span>
-                    <span className="text-slate-600">{formatDate(batch.created_at)}</span>
-                  </div>
+                  <div className="pt-1 border-t border-slate-100"></div>
                 </div>
               </div>
             ))}

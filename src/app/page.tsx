@@ -96,7 +96,7 @@ export default function Home() {
 
   return (
     <div
-      className="bg-white min-h-screen p-4"
+      className="bg-white p-4"
       style={{ fontFamily: "var(--font-geist-sans)" }}
     >
       <div className="max-w-7xl mx-auto">
