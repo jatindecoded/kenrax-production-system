@@ -1,54 +1,6 @@
+'use client';
+
 import Link from "next/link";
-
-async function getStats() {
-  try {
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000'
-      : `https://${process.env.VERCEL_URL || 'localhost:3000'}`;
-    
-    console.log('[getStats] Fetching from:', baseUrl);
-
-    const batchesRes = await fetch(`${baseUrl}/api/batches`, { cache: 'no-store' });
-    console.log('[getStats] Batches status:', batchesRes.status);
-    
-    const productsRes = await fetch(`${baseUrl}/api/products`, { cache: 'no-store' });
-    console.log('[getStats] Products status:', productsRes.status);
-
-    const batches = await batchesRes.json();
-    const products = await productsRes.json();
-    
-    console.log('[getStats] Batches data:', batches);
-    console.log('[getStats] Products data:', products);
-
-    // Calculate aggregations
-    const totalBatches = batches?.length || 0;
-    const totalQuantity = (batches || []).reduce((sum: number, b: any) => sum + (b.quantity || 0), 0);
-    const totalProducts = products?.length || 0;
-    const productTypes: any = {};
-    (products || []).forEach((p: any) => {
-      productTypes[p.product_type] = (productTypes[p.product_type] || 0) + 1;
-    });
-
-    return {
-      batches: (batches || []).slice(0, 5),
-      products: (products || []).slice(0, 5),
-      totalBatches,
-      totalQuantity,
-      totalProducts,
-      productTypes,
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      batches: [],
-      products: [],
-      totalBatches: 0,
-      totalQuantity: 0,
-      totalProducts: 0,
-      productTypes: {},
-    };
-  }
-}
 
 const productTypeLabels: {[key: string]: string} = {
   'AIR_FILTER': 'Air Filter',
@@ -56,10 +8,53 @@ const productTypeLabels: {[key: string]: string} = {
   'AIR_OIL_SEPARATOR': 'Air Oil Separator',
 };
 
-export const revalidate = 0; // No caching - always fresh
+import { useEffect, useState } from 'react';
 
-export default async function Home() {
-  const stats = await getStats();
+export default function Home() {
+  const [stats, setStats] = useState({
+    batches: [],
+    products: [],
+    totalBatches: 0,
+    totalQuantity: 0,
+    totalProducts: 0,
+    productTypes: {},
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [batchesRes, productsRes] = await Promise.all([
+          fetch('/api/batches'),
+          fetch('/api/products'),
+        ]);
+
+        const batches = await batchesRes.json();
+        const products = await productsRes.json();
+
+        const totalBatches = batches?.length || 0;
+        const totalQuantity = (batches || []).reduce((sum: number, b: any) => sum + (b.quantity || 0), 0);
+        const totalProducts = products?.length || 0;
+        const productTypes: any = {};
+        
+        (products || []).forEach((p: any) => {
+          productTypes[p.product_type] = (productTypes[p.product_type] || 0) + 1;
+        });
+
+        setStats({
+          batches: (batches || []).slice(0, 5),
+          products: (products || []).slice(0, 5),
+          totalBatches,
+          totalQuantity,
+          totalProducts,
+          productTypes,
+        });
+      } catch (error) {
+        console.error('Failed to load stats:', error);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const formatDate = (date: any) => {
     const d = new Date(date);
