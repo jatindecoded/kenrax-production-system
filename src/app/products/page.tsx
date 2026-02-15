@@ -92,7 +92,7 @@ export default function ProductsPage() {
             placeholder="Search part number, type, or description..."
             value={searchTerm}
             onChange={handleSearch}
-            className="w-full md:flex-1 px-3 py-2 border border-slate-300 rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+            className="w-full md:flex-1 px-3 py-2 border border-slate-300 rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
             autoComplete="off"
           />
           <div className="flex w-full md:w-auto gap-2">
@@ -125,39 +125,19 @@ export default function ProductsPage() {
           </div>
         )}
 
-        {/* Table - Desktop Only */}
+        {/* Cards */}
         {!loading && filteredProducts.length > 0 && (
-          <div className="hidden md:block overflow-x-auto border border-slate-200 rounded">
-            <table className="w-full text-sm">
-              <thead className="bg-slate-50 border-b border-slate-200">
-                <tr>
-                  <th className="px-4 py-3 text-left font-semibold text-black">Part Number</th>
-                  <th className="px-4 py-3 text-left font-semibold text-black">Type</th>
-                  <th className="px-4 py-3 text-left font-semibold text-black">Description</th>
-                  <th className="px-4 py-3 text-left font-semibold text-black">Created</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredProducts.map((product, idx) => (
-                  <tr key={product.id} className={idx !== filteredProducts.length - 1 ? 'border-b border-slate-100' : ''}>
-                    <td className="px-4 py-3 font-medium text-black">{product.part_number}</td>
-                    <td className="px-4 py-3 text-black text-xs font-medium">{product.product_type}</td>
-                    <td className="px-4 py-3 text-slate-600 text-xs">{product.description || '-'}</td>
-                    <td className="px-4 py-3 text-slate-600 text-xs">{formatDate(product.created_at)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {/* Cards - Mobile Only */}
-        {!loading && filteredProducts.length > 0 && (
-          <div className="md:hidden space-y-3">
+          <div className="space-y-3">
             {filteredProducts.map((product) => (
-              <div key={product.id} className="border border-slate-200 rounded p-3 bg-white">
+              <div 
+                key={product.id} 
+                className="border border-slate-200 rounded p-3 bg-white cursor-pointer hover:bg-slate-50 transition-colors"
+                onClick={() => {
+                  window.location.href = `/batches?search=${encodeURIComponent(product.part_number)}`;
+                }}
+              >
                 <div className="flex justify-between items-start mb-2">
-                  <div className="font-mono font-bold text-black text-sm">{product.part_number}</div>
+                  <div className=" font-bold text-black text-sm underline decoration-dashed underline-offset-4">{product.part_number}</div>
                   <div className="text-xs font-medium bg-slate-100 text-black px-2 py-1 rounded">{product.product_type}</div>
                 </div>
                 <div className="space-y-1 text-xs">

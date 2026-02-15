@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
@@ -9,8 +9,13 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+// const jetbrainsMono = JetBrains_Mono({
+//   variable: "--font-jetbrains-mono",
+//   subsets: ["latin"],
+// });
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -27,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${jetbrainsMono.variable} antialiased bg-white text-slate-900 flex flex-col h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-slate-900 flex flex-col h-screen`}
         style={{ fontFamily: 'var(--font-geist-sans)', letterSpacing: '0.01em' }}
       >
         <main className="bg-white flex-1 overflow-y-auto pb-24">

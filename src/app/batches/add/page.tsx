@@ -11,6 +11,7 @@ export default function AddBatchPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [showReview, setShowReview] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [productsLoading, setProductsLoading] = useState(true);
@@ -25,7 +26,7 @@ export default function AddBatchPage() {
     production_line: '',
     remarks: '',
   });
-  const [errors, setErrors] = useState<any[]>([]);
+  const [errors, setErrors] = useState<{ field: string; message: string }[]>([]);
 
   useEffect(() => {
     fetchProducts();
@@ -83,7 +84,7 @@ export default function AddBatchPage() {
     setFormData((prev) => ({
       ...prev,
       product_id: String(product.id),
-      product_search: `${product.part_number} (${product.product_type})`,
+      product_search: `${product.part_number} - ${product.product_type}`,
     }));
     setShowProductDropdown(false);
   };
@@ -109,6 +110,11 @@ export default function AddBatchPage() {
       return;
     }
 
+    // Show review instead of submitting
+    setShowReview(true);
+  };
+
+  const handleConfirmSubmit = async () => {
     setLoading(true);
     setError(null);
     setErrors([]);
@@ -144,6 +150,7 @@ export default function AddBatchPage() {
         production_line: '',
         remarks: '',
       });
+      setShowReview(false);
 
       // Redirect to batches list after 2 seconds
       setTimeout(() => {
@@ -196,171 +203,257 @@ export default function AddBatchPage() {
             </a>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Batch Code */}
-            <div>
-              <label htmlFor="batch_code" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
-                Batch Code
-              </label>
-              <input
-                id="batch_code"
-                name="batch_code"
-                type="text"
-                value={formData.batch_code}
-                onChange={handleChange}
-                placeholder="240701001"
-                className={`w-full px-3 py-2 border rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-mono ${
-                  errors.some((e) => e.field === 'batch_code') ? 'border-red-300 bg-red-50' : 'border-slate-300'
-                }`}
-                style={{ fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.05em' }}
-                autoComplete="off"
-              />
-              <p className="text-xs text-slate-500 mt-1">Format: YYMMXXX (year, month, sequence)</p>
-              {errors.some((e) => e.field === 'batch_code') && (
-                <p className="text-xs text-red-600 mt-1">{errors.find((e) => e.field === 'batch_code')?.message}</p>
-              )}
-            </div>
+          <>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Product Search */}
+              <div ref={dropdownRef}>
+                <label htmlFor="product_search" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
+                  Product <span className="text-red-600">*</span>
+                </label>
+                <div className="relative">
+                  <input
+                    id="product_search"
+                    name="product_search"
+                    type="text"
+                    inputMode="numeric"
+                    value={formData.product_search}
+                    onChange={handleChange}
+                    onFocus={() => setShowProductDropdown(true)}
+                    placeholder="Search products..."
+                    autoComplete="off"
+                    className={`w-full px-3 py-2 border rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all ${
+                      errors.some((e) => e.field === 'product_id') ? 'border-red-300 bg-red-50' : 'border-slate-300'
+                    }`}
+                  />
+                  
+                  {showProductDropdown && filteredProducts.length > 0 && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded shadow-md max-h-56 overflow-y-auto">
+                      {filteredProducts.map((product) => (
+                        <button
+                          key={product.id}
+                          type="button"
+                          onClick={() => handleProductSelect(product)}
+                          className="w-full text-left px-3 py-2 hover:bg-slate-100 transition-colors border-b border-slate-100 last:border-b-0 text-sm"
+                        >
+                          <div className="font-medium text-slate-900 underline decoration-dashed underline-offset-2">{product.part_number}</div>
+                          <div className="text-xs text-slate-600">{product.product_type}</div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
 
-            {/* Product Search */}
-            <div ref={dropdownRef}>
-              <label htmlFor="product_search" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
-                Product
-              </label>
-              <div className="relative">
-                <input
-                  id="product_search"
-                  name="product_search"
-                  type="text"
-                  value={formData.product_search}
-                  onChange={handleChange}
-                  onFocus={() => setShowProductDropdown(true)}
-                  placeholder="Search products..."
-                  autoComplete="off"
-                  className={`w-full px-3 py-2 border rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all ${
-                    errors.some((e) => e.field === 'product_id') ? 'border-red-300 bg-red-50' : 'border-slate-300'
-                  }`}
-                />
-                
-                {showProductDropdown && filteredProducts.length > 0 && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded shadow-md max-h-56 overflow-y-auto">
-                    {filteredProducts.map((product) => (
-                      <button
-                        key={product.id}
-                        type="button"
-                        onClick={() => handleProductSelect(product)}
-                        className="w-full text-left px-3 py-2 hover:bg-slate-100 transition-colors border-b border-slate-100 last:border-b-0 text-sm"
+                  {showProductDropdown && filteredProducts.length === 0 && formData.product_search && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded shadow-md overflow-hidden">
+                      <div className="p-3 text-center text-slate-500 text-xs border-b border-slate-200">
+                        No products found
+                      </div>
+                      <a
+                        href={`/products/add?part_number=${encodeURIComponent(formData.product_search)}`}
+                        className="block w-full px-3 py-2 text-left text-xs font-medium text-black hover:bg-slate-50 transition-colors uppercase tracking-wide"
                       >
-                        <div className="font-medium text-slate-900">{product.part_number}</div>
-                        <div className="text-xs text-slate-600">{product.product_type}</div>
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {showProductDropdown && filteredProducts.length === 0 && formData.product_search && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-slate-300 rounded shadow-md p-3 text-center text-slate-500 text-xs">
-                    No products found
-                  </div>
+                        + Create New Product
+                      </a>
+                    </div>
+                  )}
+                </div>
+                {errors.some((e) => e.field === 'product_id') && (
+                  <p className="text-xs text-red-600 mt-1">{errors.find((e) => e.field === 'product_id')?.message}</p>
                 )}
               </div>
-              {errors.some((e) => e.field === 'product_id') && (
-                <p className="text-xs text-red-600 mt-1">{errors.find((e) => e.field === 'product_id')?.message}</p>
-              )}
-            </div>
 
-            {/* Quantity */}
-            <div>
-              <label htmlFor="quantity" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
-                Quantity
-              </label>
-              <input
-                id="quantity"
-                name="quantity"
-                type="number"
-                min="1"
-                value={formData.quantity}
-                onChange={handleChange}
-                placeholder="0"
-                className={`w-full px-3 py-2 border rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all ${
-                  errors.some((e) => e.field === 'quantity') ? 'border-red-300 bg-red-50' : 'border-slate-300'
-                }`}
-              />
-              {errors.some((e) => e.field === 'quantity') && (
-                <p className="text-xs text-red-600 mt-1">{errors.find((e) => e.field === 'quantity')?.message}</p>
-              )}
-            </div>
+              {/* Quantity */}
+              <div>
+                <label htmlFor="quantity" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
+                  Quantity <span className="text-red-600">*</span>
+                </label>
+                <input
+                  id="quantity"
+                  name="quantity"
+                  type="number"
+                  inputMode="numeric"
+                  min="1"
+                  value={formData.quantity}
+                  onChange={handleChange}
+                  placeholder="0"
+                  className={`w-full px-3 py-2 border rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all ${
+                    errors.some((e) => e.field === 'quantity') ? 'border-red-300 bg-red-50' : 'border-slate-300'
+                  }`}
+                />
+                {errors.some((e) => e.field === 'quantity') && (
+                  <p className="text-xs text-red-600 mt-1">{errors.find((e) => e.field === 'quantity')?.message}</p>
+                )}
+              </div>
 
-            {/* Produced By */}
-            <div>
-              <label htmlFor="produced_by" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
-                Produced By <span className="font-normal text-slate-500">(Optional)</span>
-              </label>
-              <input
-                id="produced_by"
-                name="produced_by"
-                type="text"
-                value={formData.produced_by}
-                onChange={handleChange}
-                placeholder="Name"
-                className="w-full px-3 py-2 border border-slate-300 rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
-              />
-            </div>
+              {/* Batch Code */}
+              <div>
+                <label htmlFor="batch_code" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
+                  Batch Code
+                </label>
+                <input
+                  id="batch_code"
+                  name="batch_code"
+                  type="text"
+                  inputMode="numeric"
+                  value={formData.batch_code}
+                  onChange={handleChange}
+                  placeholder="240701001"
+                  className={`w-full px-3 py-2 border rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-mono ${
+                    errors.some((e) => e.field === 'batch_code') ? 'border-red-300 bg-red-50' : 'border-slate-300'
+                  }`}
+                  style={{ fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.05em' }}
+                />
+                <p className="text-xs text-slate-500 mt-1">Format: YYMMXXX (year, month, sequence)</p>
+                {errors.some((e) => e.field === 'batch_code') && (
+                  <p className="text-xs text-red-600 mt-1">{errors.find((e) => e.field === 'batch_code')?.message}</p>
+                )}
+              </div>
 
-            {/* Production Line */}
-            <div>
-              <label htmlFor="production_line" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
-                Line <span className="font-normal text-slate-500">(Optional)</span>
-              </label>
-              <input
-                id="production_line"
-                name="production_line"
-                type="text"
-                value={formData.production_line}
-                onChange={handleChange}
-                placeholder="Line A"
-                className="w-full px-3 py-2 border border-slate-300 rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
-              />
-            </div>
 
-            {/* Remarks */}
-            <div>
-              <label htmlFor="remarks" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
-                Remarks <span className="font-normal text-slate-500">(Optional)</span>
-              </label>
-              <textarea
-                id="remarks"
-                name="remarks"
-                value={formData.remarks}
-                onChange={handleChange}
-                placeholder="Notes..."
-                rows={2}
-                className={`w-full px-3 py-2 border rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none ${
-                  errors.some((e) => e.field === 'remarks') ? 'border-red-300 bg-red-50' : 'border-slate-300'
-                }`}
-              />
-              {errors.some((e) => e.field === 'remarks') && (
-                <p className="text-xs text-red-600 mt-1">{errors.find((e) => e.field === 'remarks')?.message}</p>
-              )}
-            </div>
+              {/* Produced By */}
+              <div>
+                <label htmlFor="produced_by" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
+                  Produced By <span className="font-normal text-slate-500">(Optional)</span>
+                </label>
+                <input
+                  id="produced_by"
+                  name="produced_by"
+                  type="text"
+                  value={formData.produced_by}
+                  onChange={handleChange}
+                  placeholder="Name"
+                  className="w-full px-3 py-2 border border-slate-300 rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                />
+              </div>
 
-            {/* Actions */}
-            <div className="flex gap-2 pt-2">
-              <button
-                type="submit"
-                disabled={loading}
-                className="flex-1 px-4 py-3 bg-black text-white font-semibold rounded hover:bg-slate-900 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm tracking-wide uppercase"
-              >
-                {loading ? 'Creating...' : 'Create'}
-              </button>
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="flex-1 px-4 py-3 bg-slate-200 text-slate-900 font-semibold rounded hover:bg-slate-300 transition-colors text-sm tracking-wide uppercase"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+              {/* Production Line */}
+              <div>
+                <label htmlFor="production_line" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
+                  Line <span className="font-normal text-slate-500">(Optional)</span>
+                </label>
+                <input
+                  id="production_line"
+                  name="production_line"
+                  type="text"
+                  value={formData.production_line}
+                  onChange={handleChange}
+                  placeholder="Line A"
+                  className="w-full px-3 py-2 border border-slate-300 rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                />
+              </div>
+
+              {/* Remarks */}
+              <div>
+                <label htmlFor="remarks" className="block text-xs font-semibold text-slate-900 uppercase tracking-wide mb-2">
+                  Remarks <span className="font-normal text-slate-500">(Optional)</span>
+                </label>
+                <textarea
+                  id="remarks"
+                  name="remarks"
+                  value={formData.remarks}
+                  onChange={handleChange}
+                  placeholder="Notes..."
+                  rows={2}
+                  className={`w-full px-3 py-2 border rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none ${
+                    errors.some((e) => e.field === 'remarks') ? 'border-red-300 bg-red-50' : 'border-slate-300'
+                  }`}
+                />
+                {errors.some((e) => e.field === 'remarks') && (
+                  <p className="text-xs text-red-600 mt-1">{errors.find((e) => e.field === 'remarks')?.message}</p>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-2 pt-2">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex-1 px-4 py-3 bg-black text-white font-semibold rounded hover:bg-slate-900 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm tracking-wide uppercase"
+                >
+                  {loading ? 'Creating...' : 'Create'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => router.back()}
+                  className="flex-1 px-4 py-3 bg-slate-200 text-slate-900 font-semibold rounded hover:bg-slate-300 transition-colors text-sm tracking-wide uppercase"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+
+            {/* Review Modal */}
+            {showReview && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                <div className="bg-white rounded-lg max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+                  <h2 className="text-lg font-bold text-black mb-4 tracking-tight">Review Batch Details</h2>
+
+                  {/* Review Content */}
+                  <div className="space-y-4 mb-6">
+                    <div className="border-b border-slate-200 pb-3">
+                      <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Batch Code</div>
+                      <div className="text-lg font-mono font-bold text-black">{formData.batch_code}</div>
+                    </div>
+
+                    <div className="border-b border-slate-200 pb-3">
+                      <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Product</div>
+                      <div className="text-base font-medium text-black">{formData.product_search}</div>
+                    </div>
+
+                    <div className="border-b border-slate-200 pb-3">
+                      <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Quantity</div>
+                      <div className="text-base font-bold text-black">{formData.quantity} PCS</div>
+                    </div>
+
+                    {formData.produced_by && (
+                      <div className="border-b border-slate-200 pb-3">
+                        <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Produced By</div>
+                        <div className="text-sm text-black">{formData.produced_by}</div>
+                      </div>
+                    )}
+
+                    {formData.production_line && (
+                      <div className="border-b border-slate-200 pb-3">
+                        <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Production Line</div>
+                        <div className="text-sm text-black">{formData.production_line}</div>
+                      </div>
+                    )}
+
+                    {formData.remarks && (
+                      <div className="pb-3">
+                        <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Remarks</div>
+                        <div className="text-sm text-slate-700">{formData.remarks}</div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Error */}
+                  {error && (
+                    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm font-medium">
+                      {error}
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleConfirmSubmit}
+                      disabled={loading}
+                      className="flex-1 px-4 py-3 bg-black text-white font-semibold rounded hover:bg-slate-900 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm tracking-wide uppercase"
+                    >
+                      {loading ? 'Creating...' : 'Create'}
+                    </button>
+                    <button
+                      onClick={() => setShowReview(false)}
+                      disabled={loading}
+                      className="flex-1 px-4 py-3 bg-slate-200 text-slate-900 font-semibold rounded hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm tracking-wide uppercase"
+                    >
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

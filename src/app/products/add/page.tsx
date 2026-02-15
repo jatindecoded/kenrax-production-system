@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { validateProduct } from '@/lib/validation';
 
 export default function AddProductPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -14,7 +15,14 @@ export default function AddProductPage() {
     product_type: '',
     description: '',
   });
-  const [errors, setErrors] = useState<any[]>([]);
+  const [errors, setErrors] = useState<{ field: string; message: string }[]>([]);
+
+  useEffect(() => {
+    const partNumber = searchParams.get('part_number');
+    if (partNumber) {
+      setFormData((prev) => ({ ...prev, part_number: partNumber.toUpperCase() }));
+    }
+  }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -106,7 +114,7 @@ export default function AddProductPage() {
               onChange={handleChange}
               placeholder="e.g., AB123"
               autoComplete="off"
-              className={`w-full px-3 py-2 border rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all uppercase font-mono tracking-widest ${
+              className={`w-full px-3 py-2 border rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all uppercase font-mono tracking-widest ${
                 errors.some((e) => e.field === 'part_number') ? 'border-red-300 bg-red-50' : 'border-slate-300'
               }`}
               style={{ fontFamily: 'var(--font-jetbrains-mono)' }}
@@ -164,7 +172,7 @@ export default function AddProductPage() {
               onChange={handleChange}
               placeholder="Details..."
               rows={3}
-              className={`w-full px-3 py-2 border rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none ${
+              className={`w-full px-3 py-2 border rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all resize-none ${
                 errors.some((e) => e.field === 'description') ? 'border-red-300 bg-red-50' : 'border-slate-300'
               }`}
             />
