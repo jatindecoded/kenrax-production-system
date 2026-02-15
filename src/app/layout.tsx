@@ -33,9 +33,9 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-slate-900`}
-        style={{ fontFamily: 'var(--font-geist-sans)', letterSpacing: '0.01em', overscrollBehavior: 'none', minHeight: '100vh' }}
+        style={{ fontFamily: 'var(--font-geist-sans)', letterSpacing: '0.01em', minHeight: '100vh' }}
       >
-        <main className="bg-white min-h-screen" style={{ overscrollBehaviorY: 'contain' }}>
+        <main className="bg-white min-h-screen pb-24">
           {children}
         </main>
         <BottomNav />

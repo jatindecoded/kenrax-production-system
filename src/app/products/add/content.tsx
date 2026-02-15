@@ -66,9 +66,9 @@ export default function AddProductContent() {
       setSuccess(true);
       setFormData({ part_number: '', product_type: '', description: '' });
 
-      // Redirect to products list after 2 seconds
+      // Redirect to batches page after 2 seconds
       setTimeout(() => {
-        router.push('/products');
+        router.push('/batches/add');
       }, 2000);
     } catch (err) {
       setError('An unexpected error occurred');

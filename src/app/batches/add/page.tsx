@@ -11,7 +11,6 @@ export default function AddBatchPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [showReview, setShowReview] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [productsLoading, setProductsLoading] = useState(true);
@@ -390,79 +389,6 @@ export default function AddBatchPage() {
                 </button>
               </div>
             </form>
-
-            {/* Review Modal */}
-            {showReview && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                <div className="bg-white rounded-lg max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
-                  <h2 className="text-lg font-bold text-black mb-4 tracking-tight">Review Batch Details</h2>
-
-                  {/* Review Content */}
-                  <div className="space-y-4 mb-6">
-                    <div className="border-b border-slate-200 pb-3">
-                      <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Batch Code</div>
-                      <div className="text-lg font-mono font-bold text-black">{formData.batch_code}</div>
-                    </div>
-
-                    <div className="border-b border-slate-200 pb-3">
-                      <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Product</div>
-                      <div className="text-base font-medium text-black">{formData.product_search}</div>
-                    </div>
-
-                    <div className="border-b border-slate-200 pb-3">
-                      <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Quantity</div>
-                      <div className="text-base font-bold text-black">{formData.quantity} PCS</div>
-                    </div>
-
-                    {formData.produced_by && (
-                      <div className="border-b border-slate-200 pb-3">
-                        <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Produced By</div>
-                        <div className="text-sm text-black">{formData.produced_by}</div>
-                      </div>
-                    )}
-
-                    {formData.production_line && (
-                      <div className="border-b border-slate-200 pb-3">
-                        <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Production Line</div>
-                        <div className="text-sm text-black">{formData.production_line}</div>
-                      </div>
-                    )}
-
-                    {formData.remarks && (
-                      <div className="pb-3">
-                        <div className="text-xs text-slate-600 font-semibold uppercase tracking-wide mb-1">Remarks</div>
-                        <div className="text-sm text-slate-700">{formData.remarks}</div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Error */}
-                  {error && (
-                    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm font-medium">
-                      {error}
-                    </div>
-                  )}
-
-                  {/* Actions */}
-                  <div className="flex gap-2">
-                    <button
-                      onClick={handleConfirmSubmit}
-                      disabled={loading}
-                      className="flex-1 px-4 py-3 bg-black text-white font-semibold rounded hover:bg-slate-900 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors text-sm tracking-wide uppercase"
-                    >
-                      {loading ? 'Creating...' : 'Create'}
-                    </button>
-                    <button
-                      onClick={() => setShowReview(false)}
-                      disabled={loading}
-                      className="flex-1 px-4 py-3 bg-slate-200 text-slate-900 font-semibold rounded hover:bg-slate-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm tracking-wide uppercase"
-                    >
-                      Edit
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
           </>
         )}
       </div>
