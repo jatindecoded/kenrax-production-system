@@ -301,7 +301,7 @@ export default function AddBatchPage() {
                   }`}
                   style={{ fontFamily: 'var(--font-jetbrains-mono)', letterSpacing: '0.05em' }}
                 />
-                <p className="text-xs text-slate-500 mt-1">Format: YYMMXXX (year, month, sequence)</p>
+                <p className="text-xs text-slate-500 mt-1">Format: YYMMXXX (year, month, quantity)</p>
                 {errors.some((e) => e.field === 'batch_code') && (
                   <p className="text-xs text-red-600 mt-1">{errors.find((e) => e.field === 'batch_code')?.message}</p>
                 )}
