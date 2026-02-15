@@ -32,10 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-slate-900 flex flex-col h-screen`}
-        style={{ fontFamily: 'var(--font-geist-sans)', letterSpacing: '0.01em' }}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-slate-900 flex flex-col h-dvh`}
+        style={{ fontFamily: 'var(--font-geist-sans)', letterSpacing: '0.01em', overscrollBehavior: 'none' }}
       >
-        <main className="bg-white flex-1 overflow-y-auto pb-24">
+        <main className="bg-white flex-1 overflow-y-auto pb-24" style={{ overscrollBehaviorY: 'contain' }}>
           {children}
         </main>
         <BottomNav />
