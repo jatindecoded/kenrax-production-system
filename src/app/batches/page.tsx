@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-
+import { X } from "tabler-icons-react";
 import { useSearchParams } from "next/navigation";
 import { BatchWithProduct } from "@/lib/db";
 import * as XLSX from "xlsx";
@@ -226,16 +226,27 @@ function BatchesPageContent() {
           onSubmit={handleSearchSubmit}
           className="mb-6 flex flex-wrap gap-2"
         >
-          <input
-            type="text"
-            enterKeyHint="search"
-            placeholder="Search batch code or part number..."
-            value={searchTerm}
-            onChange={handleSearch}
-            onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
-            className="w-full md:flex-1 px-3 py-2 border border-slate-300 rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
-            autoComplete="off"
-          />
+          <div className="relative w-full md:flex-1">
+            <input
+              type="text"
+              enterKeyHint="search"
+              placeholder="Search batch code or part number..."
+              value={searchTerm}
+              onChange={handleSearch}
+              onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
+              className="w-full px-3 py-2 pr-10 border border-slate-300 rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+              autoComplete="off"
+            />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => setSearchTerm('')}
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-700 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
           <div className="flex w-full md:w-auto gap-2">
             <button
               type="button"

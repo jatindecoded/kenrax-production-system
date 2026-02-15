@@ -90,6 +90,8 @@ export default function AddBatchPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    setErrors([]);
 
     if (!formData.product_id) {
       setError('Please select a product');
@@ -109,14 +111,8 @@ export default function AddBatchPage() {
       return;
     }
 
-    // Show review instead of submitting
-    setShowReview(true);
-  };
-
-  const handleConfirmSubmit = async () => {
+    // Submit directly
     setLoading(true);
-    setError(null);
-    setErrors([]);
 
     try {
       const response = await fetch('/api/batches', {
@@ -149,7 +145,6 @@ export default function AddBatchPage() {
         production_line: '',
         remarks: '',
       });
-      setShowReview(false);
 
       // Redirect to batches list after 2 seconds
       setTimeout(() => {

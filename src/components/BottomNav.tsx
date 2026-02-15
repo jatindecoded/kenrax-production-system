@@ -12,7 +12,7 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="bg-white border-t border-black fixed bottom-0 left-0 right-0 z-50">
+    <nav className="bg-white border-t border-black fixed bottom-0 left-0 right-0 z-50 shadow-[0_-2px_10px_rgba(0,0,0,0.1)]" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
       <div className="max-w-7xl mx-auto">
         <div className="flex">
           <a
