@@ -79,7 +79,7 @@ export default function AddProductContent() {
   };
 
   return (
-    <div className="bg-white flex flex-col items-center p-4 pb-32 min-h-screen" style={{ fontFamily: 'var(--font-geist-sans)' }}>
+    <div className="bg-white flex flex-col items-center p-4" style={{ fontFamily: 'var(--font-geist-sans)' }}>
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="mb-6">
@@ -110,8 +110,10 @@ export default function AddProductContent() {
               id="part_number"
               name="part_number"
               type="text"
+              enterKeyHint="done"
               value={formData.part_number}
               onChange={handleChange}
+              onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
               placeholder="e.g., AB123"
               autoComplete="off"
               className={`w-full px-3 py-2 border rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all uppercase font-mono tracking-widest ${
@@ -168,6 +170,7 @@ export default function AddProductContent() {
             <textarea
               id="description"
               name="description"
+              enterKeyHint="done"
               value={formData.description}
               onChange={handleChange}
               placeholder="Details..."

@@ -8,7 +8,7 @@ export default function BottomNav() {
   const isActive = (href: string) => pathname === href || pathname?.startsWith(`${href}/`);
 
   return (
-    <nav className="bg-white border-t border-black fixed bottom-0 left-0 right-0 z-50">
+    <nav className="bg-white border-t border-black sticky bottom-0 z-50">
       <div className="max-w-7xl mx-auto">
         <div className="flex">
           <a

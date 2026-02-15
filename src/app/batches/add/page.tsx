@@ -165,7 +165,7 @@ export default function AddBatchPage() {
   };
 
   return (
-    <div className="bg-white flex flex-col items-center p-4 pb-32 min-h-screen" style={{ fontFamily: 'var(--font-geist-sans)' }}>
+    <div className="bg-white flex flex-col items-center p-4" style={{ fontFamily: 'var(--font-geist-sans)' }}>
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="mb-6">
@@ -218,6 +218,8 @@ export default function AddBatchPage() {
                     value={formData.product_search}
                     onChange={handleChange}
                     onFocus={() => setShowProductDropdown(true)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
+                    enterKeyHint="done"
                     placeholder="Search products..."
                     autoComplete="off"
                     className={`w-full px-3 py-2 border rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all ${
@@ -270,9 +272,11 @@ export default function AddBatchPage() {
                   name="quantity"
                   type="number"
                   inputMode="numeric"
+                  enterKeyHint="done"
                   min="1"
                   value={formData.quantity}
                   onChange={handleChange}
+                  onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
                   placeholder="0"
                   className={`w-full px-3 py-2 border rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all ${
                     errors.some((e) => e.field === 'quantity') ? 'border-red-300 bg-red-50' : 'border-slate-300'
@@ -293,8 +297,10 @@ export default function AddBatchPage() {
                   name="batch_code"
                   type="text"
                   inputMode="numeric"
+                  enterKeyHint="done"
                   value={formData.batch_code}
                   onChange={handleChange}
+                  onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
                   placeholder="240701001"
                   className={`w-full px-3 py-2 border rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all font-mono ${
                     errors.some((e) => e.field === 'batch_code') ? 'border-red-300 bg-red-50' : 'border-slate-300'
@@ -317,8 +323,10 @@ export default function AddBatchPage() {
                   id="produced_by"
                   name="produced_by"
                   type="text"
+                  enterKeyHint="done"
                   value={formData.produced_by}
                   onChange={handleChange}
+                  onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
                   placeholder="Name"
                   className="w-full px-3 py-2 border border-slate-300 rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
@@ -333,8 +341,10 @@ export default function AddBatchPage() {
                   id="production_line"
                   name="production_line"
                   type="text"
+                  enterKeyHint="done"
                   value={formData.production_line}
                   onChange={handleChange}
+                  onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
                   placeholder="Line A"
                   className="w-full px-3 py-2 border border-slate-300 rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
@@ -348,6 +358,7 @@ export default function AddBatchPage() {
                 <textarea
                   id="remarks"
                   name="remarks"
+                  enterKeyHint="done"
                   value={formData.remarks}
                   onChange={handleChange}
                   placeholder="Notes..."

@@ -89,9 +89,11 @@ export default function ProductsPage() {
         <form onSubmit={handleSearchSubmit} className="mb-6 flex flex-wrap gap-2">
           <input
             type="text"
+            enterKeyHint="search"
             placeholder="Search part number, type, or description..."
             value={searchTerm}
             onChange={handleSearch}
+            onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
             className="w-full md:flex-1 px-3 py-2 border border-slate-300 rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
             autoComplete="off"
           />
