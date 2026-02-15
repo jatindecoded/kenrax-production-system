@@ -79,8 +79,8 @@ export default function AddProductContent() {
   };
 
   return (
-    <div className="bg-white flex flex-col items-center justify-center p-4" style={{ fontFamily: 'var(--font-geist-sans)' }}>
-      <div className="w-full max-w-md my-auto">
+    <div className="bg-white flex flex-col items-center justify-center p-4 pb-8" style={{ fontFamily: 'var(--font-geist-sans)' }}>
+      <div className="w-full max-w-md">
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-black tracking-tight">New Product</h1>

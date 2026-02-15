@@ -165,8 +165,8 @@ export default function AddBatchPage() {
   };
 
   return (
-    <div className="bg-white flex flex-col items-center justify-center p-4" style={{ fontFamily: 'var(--font-geist-sans)' }}>
-      <div className="w-full max-w-md my-auto">
+    <div className="bg-white flex flex-col items-center justify-center p-4 pb-8" style={{ fontFamily: 'var(--font-geist-sans)' }}>
+      <div className="w-full max-w-md">
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-black tracking-tight">New Production Batch</h1>
@@ -215,7 +215,6 @@ export default function AddBatchPage() {
                     id="product_search"
                     name="product_search"
                     type="text"
-                    inputMode="numeric"
                     value={formData.product_search}
                     onChange={handleChange}
                     onFocus={() => setShowProductDropdown(true)}
@@ -321,7 +320,7 @@ export default function AddBatchPage() {
                   value={formData.produced_by}
                   onChange={handleChange}
                   placeholder="Name"
-                  className="w-full px-3 py-2 border border-slate-300 rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  className="w-full px-3 py-2 border border-slate-300 rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
               </div>
 
@@ -337,7 +336,7 @@ export default function AddBatchPage() {
                   value={formData.production_line}
                   onChange={handleChange}
                   placeholder="Line A"
-                  className="w-full px-3 py-2 border border-slate-300 rounded text-sm bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
+                  className="w-full px-3 py-2 border border-slate-300 rounded text-base bg-white text-black placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
                 />
               </div>
 
