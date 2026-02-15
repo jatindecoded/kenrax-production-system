@@ -79,7 +79,7 @@ export default function AddProductContent() {
   };
 
   return (
-    <div className="bg-white flex flex-col items-center justify-center p-4 pb-8" style={{ fontFamily: 'var(--font-geist-sans)' }}>
+    <div className="bg-white flex flex-col items-center p-4 pb-32 min-h-screen" style={{ fontFamily: 'var(--font-geist-sans)' }}>
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="mb-6">
