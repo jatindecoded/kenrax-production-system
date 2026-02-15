@@ -240,7 +240,7 @@ function BatchesPageContent() {
               onClick={handleExport}
               className="flex-1 md:flex-none px-1 py-2 border border-slate-700 text-slate-700 font-semibold rounded hover:bg-slate-100 transition-colors text-xs tracking-wide uppercase"
             >
-              Export to Excel
+              Export Excel
             </button>
             <button
               type="button"
@@ -304,7 +304,14 @@ function BatchesPageContent() {
                   <div className="flex items-center justify-between gap-2">
                     <div className="text-xs text-slate-500"></div>
 
-                    <div className="font-bold text-black text-lg underline decoration-dashed underline-offset-4">
+                    <div 
+                      className="font-bold text-black text-lg underline decoration-dashed underline-offset-4 cursor-pointer hover:text-slate-700 transition-colors"
+                      onClick={() => {
+                        if (batch.part_number) {
+                          setSearchTerm(batch.part_number);
+                        }
+                      }}
+                    >
                       {highlightMatch(batch.part_number, searchTerm)}
                     </div>
                   </div>
