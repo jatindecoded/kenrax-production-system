@@ -2,12 +2,11 @@
 
 import { useEffect, useState, Suspense } from "react";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { BatchWithProduct } from "@/lib/db";
 import * as XLSX from "xlsx";
 
 function BatchesPageContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [allBatches, setAllBatches] = useState<BatchWithProduct[]>([]);
   const [loading, setLoading] = useState(true);
@@ -237,24 +236,24 @@ function BatchesPageContent() {
           />
           <div className="flex w-full md:w-auto gap-2">
             <button
-              type="submit"
-              className="flex-1 md:flex-none px-4 py-2 bg-black text-white font-semibold rounded hover:bg-slate-900 transition-colors text-sm tracking-wide uppercase"
-            >
-              Search
-            </button>
-            <button
               type="button"
               onClick={handleExport}
-              className="flex-1 md:flex-none px-4 py-2 border border-slate-700 text-slate-700 font-semibold rounded hover:bg-slate-100 transition-colors text-sm tracking-wide uppercase"
+              className="flex-1 md:flex-none px-1 py-2 border border-slate-700 text-slate-700 font-semibold rounded hover:bg-slate-100 transition-colors text-xs tracking-wide uppercase"
             >
               Export to Excel
             </button>
             <button
               type="button"
               onClick={() => setShowDetails(!showDetails)}
-              className="flex-1 md:flex-none px-4 py-2 border border-slate-400 text-slate-700 font-semibold rounded hover:bg-slate-100 transition-colors text-sm tracking-wide uppercase"
+              className="flex-1 md:flex-none px-1 py-2 border border-slate-400 text-slate-700 font-semibold rounded hover:bg-slate-100 transition-colors text-xs tracking-wide uppercase"
             >
               {showDetails ? "Hide" : "Show"} Details
+            </button>
+            <button
+              type="submit"
+              className="flex-1 md:flex-none px-1 py-2 bg-black text-white font-semibold rounded hover:bg-slate-900 transition-colors text-xs tracking-wide uppercase"
+            >
+              Search
             </button>
           </div>
         </form>
@@ -292,7 +291,7 @@ function BatchesPageContent() {
                 key={batch.id}
                 className="border border-slate-200 rounded p-4 bg-white"
               >
-                <div className="mb-3">
+                <div className="mb-2">
                   <div className="flex items-center justify-between gap-2">
                     <div className="text-xs font-semibold uppercase text-slate-500">
                       {formatDate(batch.created_at)}
@@ -310,7 +309,7 @@ function BatchesPageContent() {
                     </div>
                   </div>
                 </div>
-                <div className="mb-4">
+                <div className="">
                   <div className="flex items-center justify-between gap-2">
                     <div className="text-xs text-slate-500 font-semibold uppercase tracking-wide">
                       Batch Code
@@ -329,7 +328,7 @@ function BatchesPageContent() {
                   </div>
                 </div>
                 {showDetails && (
-                  <div className="space-y-2 text-xs">
+                  <div className="space-y-2 text-xs mt-2">
                     <div className="flex justify-between">
                       <span className="text-slate-600">Type:</span>
                       <span className="font-medium text-black">
