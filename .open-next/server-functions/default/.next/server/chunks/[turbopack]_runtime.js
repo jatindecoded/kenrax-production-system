@@ -805,9 +805,9 @@ module.exports = (sourcePath)=>({
       case "server/chunks/ssr/[root-of-the-server]__143021f0._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__143021f0._.js");
       case "server/chunks/ssr/[root-of-the-server]__15600e29._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__15600e29._.js");
       case "server/chunks/ssr/[root-of-the-server]__2f37ee5f._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__2f37ee5f._.js");
-      case "server/chunks/ssr/[root-of-the-server]__58e65fd7._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__58e65fd7._.js");
-      case "server/chunks/ssr/[root-of-the-server]__5c91f8f1._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__5c91f8f1._.js");
       case "server/chunks/ssr/[root-of-the-server]__a64655ed._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__a64655ed._.js");
+      case "server/chunks/ssr/[root-of-the-server]__b32b1ebe._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__b32b1ebe._.js");
+      case "server/chunks/ssr/[root-of-the-server]__b4fd023a._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__b4fd023a._.js");
       case "server/chunks/ssr/[turbopack]_runtime.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[turbopack]_runtime.js");
       case "server/chunks/ssr/_0efddc1b._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/_0efddc1b._.js");
       case "server/chunks/ssr/_next-internal_server_app__not-found_page_actions_554ec2bf.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/_next-internal_server_app__not-found_page_actions_554ec2bf.js");
@@ -840,6 +840,7 @@ module.exports = (sourcePath)=>({
       case "server/chunks/ssr/[root-of-the-server]__84006075._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__84006075._.js");
       case "server/chunks/ssr/_b0cf0c49._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/_b0cf0c49._.js");
       case "server/chunks/ssr/_next-internal_server_app_batches_page_actions_ba4399c9.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/_next-internal_server_app_batches_page_actions_ba4399c9.js");
+      case "server/chunks/ssr/node_modules_tabler-icons-react_dist_icons_x_822d6231.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_tabler-icons-react_dist_icons_x_822d6231.js");
       case "server/chunks/ssr/src_app_batches_page_tsx_b498ef7d._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/src_app_batches_page_tsx_b498ef7d._.js");
       case "server/chunks/[externals]_next_dist_a6d89067._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/[externals]_next_dist_a6d89067._.js");
       case "server/chunks/_next-internal_server_app_favicon_ico_route_actions_353150a5.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/_next-internal_server_app_favicon_ico_route_actions_353150a5.js");
@@ -854,8 +855,8 @@ module.exports = (sourcePath)=>({
       case "server/chunks/ssr/src_6d396f04._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/src_6d396f04._.js");
       case "server/chunks/ssr/[root-of-the-server]__106fc04f._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__106fc04f._.js");
       case "server/chunks/ssr/_d03254c9._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/_d03254c9._.js");
+      case "server/chunks/ssr/_e87bcb53._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/_e87bcb53._.js");
       case "server/chunks/ssr/_next-internal_server_app_products_page_actions_f4bcb93a.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/_next-internal_server_app_products_page_actions_f4bcb93a.js");
-      case "server/chunks/ssr/src_app_products_page_tsx_f52027a3._.js": return require("/Users/jatin/code/kenrax-production-system/.open-next/server-functions/default/.next/server/chunks/ssr/src_app_products_page_tsx_f52027a3._.js");
       default:
         throw new Error(`Not found ${chunkPath}`);
     }
